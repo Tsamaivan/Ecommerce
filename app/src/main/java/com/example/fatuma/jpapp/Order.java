@@ -2,6 +2,8 @@ package com.example.fatuma.jpapp;
 
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Order {
@@ -12,18 +14,20 @@ public class Order {
     private String status;
     private String date;
     private String comment;
-    private int itemid;
+    @PrimaryKey(autoGenerate = true)
+    private int itemId;
 
-    public Order(String item, String quantity, String amount, String status, String date, String comment, int itemid) {
+    public Order(String item, String quantity, String amount, String status, String date,
+                 String comment, int itemId) {
         this.item = item;
         this.quantity = quantity;
         this.amount = amount;
         this.status = status;
         this.date = date;
         this.comment = comment;
-        this.itemid = itemid;
+        this.itemId = itemId;
     }
-
+@Ignore
     public Order(String item, String quantity, String amount, String status, String date, String comment) {
         this.item = item;
         this.quantity = quantity;
@@ -81,11 +85,11 @@ public class Order {
         this.comment = comment;
     }
 
-    public int getItemid() {
-        return itemid;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItemid(int itemid) {
-        this.itemid = itemid;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 }

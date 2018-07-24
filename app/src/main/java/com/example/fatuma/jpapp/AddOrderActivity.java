@@ -1,6 +1,6 @@
 package com.example.fatuma.jpapp;
 
-import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,10 +43,10 @@ public class AddOrderActivity extends AppCompatActivity {
 
     public void selectstatus(View radioButton){
         int idChosen = radioButton.getId();
-        if (idChosen == R.id.rpaid) {
+        if (idChosen == R.id.rPaid) {
             status = "Paid";
             Toast.makeText(this, "paid selected" + status, Toast.LENGTH_SHORT).show();
-        } else if (idChosen == R.id.rcredit) {
+        } else if (idChosen == R.id.rCredit) {
             status = "Credit";
             Toast.makeText(this, "credit selected" + status, Toast.LENGTH_SHORT).show();
         }
@@ -60,8 +60,9 @@ public class AddOrderActivity extends AppCompatActivity {
         comment = etcomment.getText().toString();
 
         if (!item.isEmpty() && !quantity.isEmpty() && !amount.isEmpty() && !date.isEmpty()
-                && !comment.isEmpty() && !status.isEmpty()) {
+                && !comment.isEmpty()) {
             Order newUser = new Order(item, quantity, amount, status, date, comment);
+            getDb().orderDao().insertOrder(newUser);
 
             Toast.makeText(this, "We typed item: " + newUser.getItem() + " and amount: " +
                     newUser.getAmount(), Toast.LENGTH_SHORT).show();
@@ -76,5 +77,12 @@ public class AddOrderActivity extends AppCompatActivity {
         }
 
     }
+    private JpDatabase getDb() {
+        String dataName = "room_db";
+        JpDatabase db = Room.databaseBuilder(getApplicationContext(), JpDatabase.class, dataName)
+                .allowMainThreadQueries().build();
+        return db;
+    }
+
 
 }
